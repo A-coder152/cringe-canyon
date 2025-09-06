@@ -11,28 +11,76 @@ flex-direction: column;
 align-items:center;
 background-color: #eee;
 color: #444;
+padding: 2% 10%;
+}
+.canyon{
+display: flex;
+flex-direction: column;
+align-items:center;
+	gap: 150px;
+	background-color: #753
+}
+.two{
+	display:flex;
+	flex-direction:row;
+	justify-content:center;
+	gap: 400px;
+}
+.one{
+	display:flex;
+	flex-direction:row;
+	justify-content:center;
+}
+.acontainer{
+background-color: #844;
+padding: 20px;
+margin: 10px;
+min-width: 200px;
+border: 4px solid #c99;
+text-align:center;
+color: #eaa;
 }
 </style>
 </head>
 <body>
 <h1>Cringe Canyon</h1>
 <div>
-<input type="text" placeholder="Yell at the canyon!"></input>
-<button>Yell</button>
+<input type="text" placeholder="Yell at the canyon!" id="yellInput"></input>
+<button id="yell">Yell</button>
+<p id = "response"></p>
 </div>
-<div>
-<div>
+<div class="canyon">
+<div class="one">
+<div class="acontainer">
 <p>Redirect 1</p>
 <a>link</a>
 </div>
-<div>
+</div>
+<div class="two">
+<div class="acontainer">
 <p>Redirect 2</p>
 <a>link</a>
 </div>
-<div>
+<div class="acontainer">
 <p>Redirect 3</p>
 <a>link</a>
 </div>
 </div>
+</div>
+<script>
+let responses = ["cringe", "sus", "no one asked", "6-7"]
+document.addEventListener("DOMContentLoaded", () => {
+	const yellButton = document.getElementById('yell')
+	const yellInput = document.getElementById('yellInput')
+	const response = document.getElementById('response')
+
+	yellButton.addEventListener("click", () =>{
+		const yell = yellInput.value.trim()
+		if (yell) {
+			response.textContent = responses[Math.floor(Math.random() * responses.length)]
+		}
+	})
+})
+</script>
 </body>
 </html>
