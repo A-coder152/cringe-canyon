@@ -77,7 +77,28 @@ document.addEventListener("DOMContentLoaded", () => {
 	yellButton.addEventListener("click", () =>{
 		const yell = yellInput.value.trim()
 		if (yell) {
-			response.textContent = responses[Math.floor(Math.random() * responses.length)]
+			console.log("its happening")
+			response.textContent = "The canyon is responding..."
+			fetch("https://ai.hackclub.com/chat/completions", {
+				method: "POST",
+				headers: {"Content-Type": "application/json"},
+				body: JSON.stringify({
+					messages:[{role: "user", content: `You are the Cringe Canyon, responsible for returning cringe responses to user yells. The user has prompted: ${yell}. Return a very short (<5 words), cringy response.`}]
+				})
+			}).then(res => {
+				if (!res.ok) {
+					throw new Error(`oopsie: http is ${res.status}`)
+				} 
+				return res.json()
+			}).then(data => {
+				if (data.choices && data.choices.length > 0){
+					let aiReturned = data.choices[0].message.content
+					aiReturned = aiReturned.substring(aiReturned.lastIndexOf(">") + 1).trim()
+					response.textContent = aiReturned
+				} else { response.textContent = "the canyon is trolling...."}
+			}).catch(error =>{
+				response.textContent = "the canyon has buggeted."
+			})
 		}
 	})
 })
