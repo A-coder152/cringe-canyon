@@ -40,6 +40,11 @@ border: 4px solid #c99;
 text-align:center;
 color: #eaa;
 }
+#response{
+	position: absolute;
+	top: 128px;
+	left: 460px;
+}
 </style>
 </head>
 <body>
@@ -68,8 +73,8 @@ color: #eaa;
 </div>
 </div>
 <script>
-let responses = ["cringe", "sus", "no one asked", "6-7"]
 document.addEventListener("DOMContentLoaded", () => {
+	let times_thrown = 0;
 	const yellButton = document.getElementById('yell')
 	const yellInput = document.getElementById('yellInput')
 	const response = document.getElementById('response')
@@ -83,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				method: "POST",
 				headers: {"Content-Type": "application/json"},
 				body: JSON.stringify({
-					messages:[{role: "user", content: `You are the Cringe Canyon, responsible for returning cringe responses to user yells. The user has prompted: ${yell}. Return a very short (<5 words), cringy response.`}]
+					messages:[{role: "user", content: `You are the Cringe Canyon, responsible for returning cringe responses that utilize dead memes to user yells. The user has prompted: ${yell}. Return a very short (<5 words), cringy response.`}]
 				})
 			}).then(res => {
 				if (!res.ok) {
@@ -95,12 +100,29 @@ document.addEventListener("DOMContentLoaded", () => {
 					let aiReturned = data.choices[0].message.content
 					aiReturned = aiReturned.substring(aiReturned.lastIndexOf(">") + 1).trim()
 					response.textContent = aiReturned
+					throw_text_around(response)
 				} else { response.textContent = "the canyon is trolling...."}
 			}).catch(error =>{
 				response.textContent = "the canyon has buggeted."
+				console.log(error)
 			})
 		}
 	})
+
+	function throw_text_around(a){
+	let left_thing = parseFloat(a.style.left) || 460
+	let top_thing = parseFloat(a.style.top) || 128
+	console.log(a.style.top, a.style.left)
+
+	a.style.left = (left_thing + Math.random() * 6 - 3) + "px"
+	a.style.top = (top_thing + Math.random() * 6 - 3) + "px"
+
+	if (times_thrown < 10000) {
+	requestAnimationFrame(() => throw_text_around(a)); 
+	times_thrown += 1
+	console.log(a.style.top, a.style.left)
+	} else {return}
+	}
 })
 </script>
 </body>
